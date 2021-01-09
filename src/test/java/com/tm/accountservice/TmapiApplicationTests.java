@@ -1,4 +1,4 @@
-package com.tm.tmapi;
+package com.tm.accountservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

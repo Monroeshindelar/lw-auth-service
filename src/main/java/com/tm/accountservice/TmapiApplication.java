@@ -1,4 +1,4 @@
-package com.tm.tmapi;
+package com.tm.accountservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
