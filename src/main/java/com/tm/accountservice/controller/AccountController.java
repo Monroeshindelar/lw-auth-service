@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/accounts")
 @Slf4j
-public class AcccountController {
+public class AccountController {
 
     @Autowired
     private AccountRepository accountRepository;
