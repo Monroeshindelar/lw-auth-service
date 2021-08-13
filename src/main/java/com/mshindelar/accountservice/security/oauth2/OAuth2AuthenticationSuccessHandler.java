@@ -47,8 +47,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
 
-        OAuth2AuthorizedClient oAuth2AuthorizedClient = authorizedClientService.loadAuthorizedClient(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId(), oAuth2AuthenticationToken.getName());
-
         if(response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
         }
