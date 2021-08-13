@@ -6,6 +6,7 @@ import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.security.core.Authentication;
@@ -21,24 +22,20 @@ import java.util.Map;
 @Slf4j
 @Service
 public class TokenProvider {
-    private static final String key = "926D96C90030DD58429D2751AC1BDBBC";
+
+    @Value("${application.key}")
+    private static String key;
+
     private static final long expireMs = 864000000;
 
     private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
-
-    @Autowired
-    private OAuth2AuthorizedClientService authorizedClientService;
 
     public String createToken(Authentication authentication) {
         String principalId = (String) ((DefaultOAuth2User) authentication.getPrincipal()).getAttributes().get("id");
 
         OAuth2AuthenticationToken authenticationToken = (OAuth2AuthenticationToken) authentication;
-        OAuth2AuthorizedClient authorizedClient = authorizedClientService.loadAuthorizedClient(authenticationToken.getAuthorizedClientRegistrationId(),
-                authenticationToken.getName());
 
         JSONObject token = new JSONObject();
-        token.appendField("access_token", authorizedClient.getAccessToken().getTokenValue());
-        //token.appendField("refresh_token", authorizedClient.getAccessToken().getTokenValue());
         token.appendField("id", principalId);
 
         Date now = new Date();

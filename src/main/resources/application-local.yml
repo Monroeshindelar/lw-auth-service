@@ -40,3 +40,6 @@ spring:
             tokenUri: https://discord.com/api/oauth2/token
             userInfoUri: https://discord.com/api/users/@me
             usernameAttribute: username
+
+application:
+  key: ${KEY}
