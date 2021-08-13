@@ -1,17 +1,15 @@
 package com.mshindelar.accountservice.security;
 
+import com.mshindelar.accountservice.config.TempConfiguration;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Service;
@@ -23,8 +21,10 @@ import java.util.Map;
 @Service
 public class TokenProvider {
 
-    @Value("${application.key}")
-    private static String key;
+    //private static String key;
+
+    @Autowired
+    private TempConfiguration jwtConfig;
 
     private static final long expireMs = 864000000;
 
@@ -45,11 +45,12 @@ public class TokenProvider {
                 .setSubject(token.toString())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, key)
+                .signWith(SignatureAlgorithm.HS512, jwtConfig.getKey())
                 .compact();
     }
 
     public boolean validateToken(String authToken) {
+        String key = jwtConfig.getKey();
         try {
             Jwts.parser().setSigningKey(key).parseClaimsJws(authToken);
             return true;
@@ -66,6 +67,7 @@ public class TokenProvider {
     }
 
     public String getUserIdFromToken(String token) {
+        String key = jwtConfig.getKey();
         Claims claims = Jwts.parser()
                 .setSigningKey(key)
                 .parseClaimsJws(token)
