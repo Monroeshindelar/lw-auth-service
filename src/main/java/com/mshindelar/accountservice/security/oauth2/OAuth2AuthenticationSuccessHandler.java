@@ -33,9 +33,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Autowired
-    private OAuth2AuthorizedClientService authorizedClientService;
-
-    @Autowired
     OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
         this.tokenProvider = tokenProvider;
         this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
@@ -69,8 +66,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String token = tokenProvider.createToken(authentication);
 
         OAuth2AuthenticationToken authenticationToken = (OAuth2AuthenticationToken) authentication;
-        OAuth2AuthorizedClient authorizedClient = authorizedClientService.loadAuthorizedClient(authenticationToken.getAuthorizedClientRegistrationId(),
-                authenticationToken.getName());
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)
