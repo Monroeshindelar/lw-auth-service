@@ -1,7 +1,42 @@
 server:
-  port: ${ACCOUNT_SERVICE_PORT:6091}
+  port: ${AUTH_SERVICE_PORT:6091}
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
 
 spring:
+  application:
+    name: account-service
   data:
     mongodb:
-      uri: mongodb://localhost:27017/accountsdb
+      authentication-database: ${AUTH_SERVICE_AUTHENTICATION_DB}
+      username: ${AUTH_SERVICE_DB_USERNAME}
+      password: ${AUTH_SERVICE_DB_PASSWORD}
+      database: ${AUTH_SERVICE_DB_NAME}
+      port: ${AUTH_SERVICE_DB_PORT:27017}
+      host: ${AUTH_SERVICE_DB_HOST:localhost}
+  security:
+    oauth2:
+      client:
+        registration:
+          discord:
+            client-id: ${DISCORD_CLIENT_ID}
+            client-secret: ${DISCORD_CLIENT_SECRET}
+            clientAuthenticationMethod: post
+            authorizationGrantType: authorization_code
+            scope:
+              - identify
+              - email
+              - guilds
+              - connections
+            redirectUri: "{baseUrl}/login/oauth2/code/discord"
+            clientName: LW Client
+        provider:
+          discord:
+            authorizationUri: https://discord.com/api/oauth2/authorize
+            tokenUri: https://discord.com/api/oauth2/token
+            userInfoUri: https://discord.com/api/users/@me
+            usernameAttribute: username
