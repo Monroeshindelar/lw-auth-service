@@ -2,12 +2,10 @@ package com.mshindelar.accountservice.auth;
 
 import com.mshindelar.accountservice.entity.Account;
 import com.mshindelar.accountservice.repository.AccountRepository;
-//import com.mshindelar.accountservice.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.time.LocalDateTime;
@@ -18,11 +16,6 @@ public class DiscordOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private AccountRepository accountRepository;
-
-    @Autowired
-    private OAuth2AuthorizedClientService authorizedClientService;
-
-
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
