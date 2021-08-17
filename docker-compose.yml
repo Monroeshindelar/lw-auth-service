@@ -1,0 +1,6 @@
+lw-auth-service:
+  build: .
+  ports:
+    - 6091:6091
+  env_file:
+    - env.list

@@ -32,7 +32,7 @@ spring:
               - email
               - guilds
               - connections
-            redirectUri: "{baseUrl}/login/oauth2/code/discord"
+            redirectUri: "${GATEWAY_HOST}/login/oauth2/code/discord"
             clientName: LW Client
         provider:
           discord:
