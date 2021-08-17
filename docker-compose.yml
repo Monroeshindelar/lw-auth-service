@@ -1,5 +1,6 @@
 lw-auth-service:
   build: .
+  container_name: lw-auth-service
   ports:
     - 6091:6091
   env_file:

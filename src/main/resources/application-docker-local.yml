@@ -1,7 +1,0 @@
-server:
-  port: 6091
-
-spring:
-  data:
-    mongodb:
-      uri: mongodb://host.docker.internal:27017/accountsdb
