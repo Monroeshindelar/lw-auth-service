@@ -1,16 +1,12 @@
 package com.mshindelar.accountservice.controller;
 
-import com.mshindelar.accountservice.exception.ResourceNotFoundException;
-import com.mshindelar.accountservice.repository.AccountRepository;
+import com.mshindelar.accountservice.dto.AccountDto;
 import com.mshindelar.accountservice.entity.Account;
+import com.mshindelar.accountservice.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -18,18 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
-//    @GetMapping("me")
-//    @PreAuthorize("hasRole('USER')")
-//    public Account getCurrentUser(OAuth2AuthenticationToken token) {
-//        //return accountRepository.findByPrincipalId((String) token.getPrincipal().getAttributes().get("id"));
-//        return null;
-//    }
+    @Autowired
+    private ModelMapper modelMapper;
+
+    private AccountDto convertToDto(Account account) { return modelMapper.map(account, AccountDto.class); }
 
     @GetMapping("me")
-    public Account getCurrentUser(@RequestHeader("x-auth-header") String id) {
-        return this.accountRepository.findByPrincipalId(id).orElseThrow(() ->
-                new ResourceNotFoundException("User", "id", id));
+    public Account getCurrentAuthenticatedUser(@RequestHeader("x-auth-header") String principalId) {
+        return this.accountService.getAccount(principalId);
+    }
+
+    @GetMapping("{principalId}")
+    public AccountDto getAccount(@PathVariable("principalId") String principalId) {
+        return convertToDto(this.accountService.getAccount(principalId));
     }
 }
