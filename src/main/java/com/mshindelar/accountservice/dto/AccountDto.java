@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class AccountDto {
     private String username;
+    private int discriminator;
     private String avatar;
 }
