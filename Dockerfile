@@ -4,4 +4,3 @@ VOLUME /main-app
 ADD build/libs/*.jar service.jar
 EXPOSE 6091
 ENTRYPOINT ["java", "-jar", "/service.jar"]
-
